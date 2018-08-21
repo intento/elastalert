@@ -1216,6 +1216,7 @@ class PagerDutyAlerter(Alerter):
     def alert(self, matches):
         body = self.create_alert_body(matches)
 
+        body = self.format_body(body)
         # post to pagerduty
         headers = {'content-type': 'application/json'}
         if self.pagerduty_api_version == 'v2':
@@ -1258,7 +1259,7 @@ class PagerDutyAlerter(Alerter):
                 proxies=proxies
             )
             response.raise_for_status()
-        except RequestException as e:
+        except Exception as e:
             raise EAException("Error posting to pagerduty: %s" % e)
 
         if self.pagerduty_event_type == 'trigger':
@@ -1288,6 +1289,9 @@ class PagerDutyAlerter(Alerter):
     def get_info(self):
         return {'type': 'pagerduty',
                 'pagerduty_client_name': self.pagerduty_client_name}
+
+    def format_body(self, body):
+        return body.encode('UTF-8')
 
 
 class ExotelAlerter(Alerter):
