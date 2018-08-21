@@ -1259,6 +1259,7 @@ class PagerDutyAlerter(Alerter):
                 proxies=proxies
             )
             response.raise_for_status()
+            elastalert_logger.info("PagerDutyAlerter: Response is: %s", response.text)
         except Exception as e:
             raise EAException("Error posting to pagerduty: %s" % e)
 
