@@ -1216,7 +1216,6 @@ class PagerDutyAlerter(Alerter):
     def alert(self, matches):
         body = self.create_alert_body(matches)
 
-        body = self.format_body(body)
         # post to pagerduty
         headers = {'content-type': 'application/json'}
         if self.pagerduty_api_version == 'v2':
@@ -1254,7 +1253,7 @@ class PagerDutyAlerter(Alerter):
         try:
             response = requests.post(
                 self.url,
-                data=json.dumps(payload, cls=DateTimeEncoder, ensure_ascii=False),
+                data=json.dumps(payload, cls=DateTimeEncoder, ensure_ascii=False, encoding="utf8"),
                 headers=headers,
                 proxies=proxies
             )
@@ -1290,9 +1289,6 @@ class PagerDutyAlerter(Alerter):
     def get_info(self):
         return {'type': 'pagerduty',
                 'pagerduty_client_name': self.pagerduty_client_name}
-
-    def format_body(self, body):
-        return body.encode('UTF-8')
 
 
 class ExotelAlerter(Alerter):
