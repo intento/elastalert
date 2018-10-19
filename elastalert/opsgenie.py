@@ -28,6 +28,7 @@ class OpsGenieAlerter(Alerter):
         self.alias = self.rule.get('opsgenie_alias')
         self.opsgenie_proxy = self.rule.get('opsgenie_proxy', None)
         self.priority = self.rule.get('opsgenie_priority')
+        self.entity = self.rule.get('opsgenie_entity')
 
     def _fill_responders(self, responders, type_):
         return [{'id': r, 'type': type_} for r in responders]
@@ -64,6 +65,8 @@ class OpsGenieAlerter(Alerter):
 
         if self.alias is not None:
             post['alias'] = self.alias.format(**matches[0])
+
+        post['entity'] = self.entity
 
         logging.debug(json.dumps(post))
 
