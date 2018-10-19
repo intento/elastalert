@@ -66,7 +66,7 @@ class OpsGenieAlerter(Alerter):
         if self.alias is not None:
             post['alias'] = self.alias.format(**matches[0])
 
-        if self.alias is not None:
+        if self.entity is not None:
             post['entity'] = self.entity
 
         logging.debug(json.dumps(post))
